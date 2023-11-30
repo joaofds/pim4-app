@@ -102,10 +102,14 @@ class _ReservasPageState extends State<ReservasPage> {
               ),
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _submitReserva,
-              child: const Text('Enviar Reserva'),
-            ),
+            SizedBox(
+              height: 50,
+              width: 120,
+              child: ElevatedButton(
+                onPressed: _submitReserva,
+                child: const Text('Salvar'),
+              ),
+            )
           ],
         ),
       ),
