@@ -10,18 +10,24 @@ class ReservasPage extends StatefulWidget {
 
 class _ReservasPageState extends State<ReservasPage> {
   final TextEditingController _responsavelController = TextEditingController();
+  final TextEditingController _dataReservaController = TextEditingController();
 
   Future<void> _submitReserva() async {
     final String responsavel = _responsavelController.text.trim();
+    final String dataReserva = _dataReservaController.text.trim();
 
-    if (responsavel.isNotEmpty) {
-      final Reserva reserva = Reserva(responsavel: responsavel);
+    print(_dataReservaController);
+
+    if (responsavel.isNotEmpty && dataReserva.isNotEmpty) {
+      final Reserva reserva =
+          Reserva(responsavel: responsavel, dataReserva: dataReserva);
       try {
         await ApiService().submitReserva(reserva);
         _mostrarSnackBar('Reserva enviada com sucesso!');
         _responsavelController.clear();
 
         // Navegar para a página de confirmação
+        // ignore: use_build_context_synchronously
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => ConfirmacaoPage()),
@@ -30,7 +36,7 @@ class _ReservasPageState extends State<ReservasPage> {
         _mostrarSnackBar('Erro ao enviar reserva: $error');
       }
     } else {
-      _mostrarSnackBar('Campo de responsável está vazio');
+      _mostrarSnackBar('Todos os campos são obrigatórios');
     }
   }
 
@@ -49,22 +55,67 @@ class _ReservasPageState extends State<ReservasPage> {
         title: Text('Reservas'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.only(
+          left: 50,
+          top: 20,
+          right: 50,
+          bottom: 20,
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField(
-              controller: _responsavelController,
-              decoration: InputDecoration(labelText: 'Responsável'),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: TextField(
+                controller: _responsavelController,
+                decoration: const InputDecoration(
+                    labelText: 'Responsável',
+                    filled: true,
+                    prefixIcon: Icon(Icons.person),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue))),
+              ),
             ),
-            SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 0),
+              child: TextField(
+                controller: _dataReservaController,
+                decoration: const InputDecoration(
+                    labelText: 'Data da Reserva',
+                    filled: true,
+                    prefixIcon: Icon(Icons.calendar_today),
+                    enabledBorder:
+                        OutlineInputBorder(borderSide: BorderSide.none),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue))),
+                readOnly: true,
+                onTap: () {
+                  _selectDate();
+                },
+              ),
+            ),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _submitReserva,
-              child: Text('Enviar Reserva'),
+              child: const Text('Enviar Reserva'),
             ),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> _selectDate() async {
+    DateTime? selectedDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2023),
+        lastDate: DateTime(2100));
+
+    if (selectedDate != null) {
+      setState(() {
+        _dataReservaController.text = selectedDate.toString().split(" ")[0];
+      });
+    }
   }
 }

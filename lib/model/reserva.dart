@@ -1,11 +1,10 @@
 class Reserva {
   late String responsavel;
+  late String dataReserva;
 
-  Reserva({required this.responsavel});
+  Reserva({required this.responsavel, required this.dataReserva});
 
   Map<String, dynamic> toJson() {
-    return {
-      'responsavel': responsavel,
-    };
+    return {'Responsavel': responsavel, 'DataReserva': dataReserva};
   }
 }

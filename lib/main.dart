@@ -3,10 +3,12 @@ import 'package:pim4/view/home_page.dart';
 import 'package:pim4/view/reservas_page.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -14,13 +16,16 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: BottomNavigation(),
+      home: const BottomNavigation(),
     );
   }
 }
 
 class BottomNavigation extends StatefulWidget {
+  const BottomNavigation({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _BottomNavigationState createState() => _BottomNavigationState();
 }
 
@@ -40,7 +45,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
             _currentIndex = index;
           });
         },
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
