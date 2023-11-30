@@ -15,16 +15,22 @@ class ReservasPage extends StatefulWidget {
 class _ReservasPageState extends State<ReservasPage> {
   final TextEditingController _responsavelController = TextEditingController();
   final TextEditingController _dataReservaController = TextEditingController();
+  TimeOfDay? _selectedTime;
 
   Future<void> _submitReserva() async {
     final String responsavel = _responsavelController.text.trim();
-    final String dataReserva = _dataReservaController.text.trim();
+    final String data = _dataReservaController.text.trim();
+    final String hora = _selectedTime != null
+        ? '${_selectedTime!.hour}:${_selectedTime!.minute}'
+        : '';
+
+    String dataReserva = '${data}T$hora';
 
     if (kDebugMode) {
-      print(_dataReservaController);
+      print(dataReserva);
     }
 
-    if (responsavel.isNotEmpty && dataReserva.isNotEmpty) {
+    if (responsavel.isNotEmpty && data.isNotEmpty && hora.isNotEmpty) {
       final Reserva reserva =
           Reserva(responsavel: responsavel, dataReserva: dataReserva);
       try {
@@ -32,6 +38,7 @@ class _ReservasPageState extends State<ReservasPage> {
         _mostrarSnackBar('Reserva enviada com sucesso!');
         _responsavelController.clear();
         _dataReservaController.clear();
+        _selectedTime = null;
 
         // Navegar para a página de confirmação
         // ignore: use_build_context_synchronously
@@ -84,7 +91,7 @@ class _ReservasPageState extends State<ReservasPage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 0),
+              padding: const EdgeInsets.only(bottom: 20),
               child: TextField(
                 controller: _dataReservaController,
                 decoration: const InputDecoration(
@@ -99,6 +106,25 @@ class _ReservasPageState extends State<ReservasPage> {
                 onTap: () {
                   _selectDate();
                 },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: InkWell(
+                onTap: () {
+                  _mostrarTimePicker();
+                },
+                child: InputDecorator(
+                  decoration: const InputDecoration(
+                    labelText: 'Hora',
+                    border: OutlineInputBorder(),
+                  ),
+                  child: _selectedTime != null
+                      ? Text(
+                          _selectedTime!.format(context),
+                        )
+                      : const Text('Selecione a hora'),
+                ),
               ),
             ),
             const SizedBox(height: 20),
@@ -116,6 +142,7 @@ class _ReservasPageState extends State<ReservasPage> {
     );
   }
 
+// mostra datepick
   Future<void> _selectDate() async {
     DateTime? selectedDate = await showDatePicker(
         context: context,
@@ -128,5 +155,19 @@ class _ReservasPageState extends State<ReservasPage> {
         _dataReservaController.text = selectedDate.toString().split(" ")[0];
       });
     }
+  }
+
+  // mostra o timepick
+  void _mostrarTimePicker() {
+    showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    ).then((time) {
+      if (time != null) {
+        setState(() {
+          _selectedTime = time;
+        });
+      }
+    });
   }
 }

@@ -10,7 +10,10 @@ class HomePage extends StatelessWidget {
         title: const Text('Home'),
       ),
       body: const Center(
-        child: Text('Bem-vindo!'),
+        child: Text(
+          'Seja Bem Vindo!',
+          style: TextStyle(color: Colors.black, fontSize: 32),
+        ),
       ),
     );
   }

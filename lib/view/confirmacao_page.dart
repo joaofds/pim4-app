@@ -25,7 +25,7 @@ class ConfirmacaoPage extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Text(
-              'Entraremos em contato em breve.',
+              'Até breve.',
               style: TextStyle(fontSize: 16),
             ),
           ],
