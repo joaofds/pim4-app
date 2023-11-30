@@ -19,6 +19,7 @@ class _ReservasPageState extends State<ReservasPage> {
       try {
         await ApiService().submitReserva(reserva);
         _mostrarSnackBar('Reserva enviada com sucesso!');
+        _responsavelController.clear();
 
         // Navegar para a página de confirmação
         Navigator.push(
