@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
 class ConfirmacaoPage extends StatelessWidget {
+  const ConfirmacaoPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Confirmação de Reserva'),
+        title: const Text('Confirmação de Reserva'),
       ),
-      body: Center(
+      body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -18,7 +20,7 @@ class ConfirmacaoPage extends StatelessWidget {
             ),
             SizedBox(height: 20),
             Text(
-              'Reserva realizada com sucesso!',
+              'Sua reserva foi realizada com sucesso!',
               style: TextStyle(fontSize: 18),
             ),
             SizedBox(height: 10),

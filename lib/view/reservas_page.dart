@@ -1,10 +1,14 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pim4/model/reserva.dart';
 import 'package:pim4/service/api_service.dart';
 import 'package:pim4/view/confirmacao_page.dart';
 
 class ReservasPage extends StatefulWidget {
+  const ReservasPage({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _ReservasPageState createState() => _ReservasPageState();
 }
 
@@ -16,7 +20,9 @@ class _ReservasPageState extends State<ReservasPage> {
     final String responsavel = _responsavelController.text.trim();
     final String dataReserva = _dataReservaController.text.trim();
 
-    print(_dataReservaController);
+    if (kDebugMode) {
+      print(_dataReservaController);
+    }
 
     if (responsavel.isNotEmpty && dataReserva.isNotEmpty) {
       final Reserva reserva =
@@ -25,12 +31,13 @@ class _ReservasPageState extends State<ReservasPage> {
         await ApiService().submitReserva(reserva);
         _mostrarSnackBar('Reserva enviada com sucesso!');
         _responsavelController.clear();
+        _dataReservaController.clear();
 
         // Navegar para a página de confirmação
         // ignore: use_build_context_synchronously
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ConfirmacaoPage()),
+          MaterialPageRoute(builder: (context) => const ConfirmacaoPage()),
         );
       } catch (error) {
         _mostrarSnackBar('Erro ao enviar reserva: $error');
@@ -52,7 +59,7 @@ class _ReservasPageState extends State<ReservasPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Reservas'),
+        title: const Text('Reservas'),
       ),
       body: Padding(
         padding: const EdgeInsets.only(

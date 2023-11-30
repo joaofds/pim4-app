@@ -32,7 +32,7 @@ class BottomNavigation extends StatefulWidget {
 class _BottomNavigationState extends State<BottomNavigation> {
   int _currentIndex = 0;
 
-  final List<Widget> _pages = [HomePage(), ReservasPage()];
+  final List<Widget> _pages = [const HomePage(), const ReservasPage()];
 
   @override
   Widget build(BuildContext context) {

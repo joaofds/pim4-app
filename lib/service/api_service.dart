@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:pim4/model/reserva.dart';
 
@@ -15,9 +16,13 @@ class ApiService {
     );
 
     if (response.statusCode == 200) {
-      print('Reserva enviada com sucesso');
+      if (kDebugMode) {
+        print('Reserva enviada com sucesso');
+      }
     } else {
-      print(response);
+      if (kDebugMode) {
+        print(response);
+      }
       throw Exception('Falha ao enviar reserva');
     }
   }
